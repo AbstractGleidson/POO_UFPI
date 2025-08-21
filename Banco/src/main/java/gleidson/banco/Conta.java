@@ -2,13 +2,13 @@ package gleidson.banco;
 
 public class Conta {
 
-    private int numero;
-    private double saldo;
-    private String extrato = "";
-    private Pessoa dono;
+    private int numero; // Numero da conta
+    private double saldo; // Saldo da conta
+    private String extrato = ""; // Extrato da conta
+    private Pessoa dono; // Pessoa associada a essa conta
 
-    public Conta(int n) {
-        numero = n;
+    public Conta(int numeroConta) {
+        numero = numeroConta;
     }
 
     public Pessoa getDono() {
@@ -19,14 +19,30 @@ public class Conta {
         this.dono = dono;
     }
 
+    // Deposita um valor passado como parametro na conta
     public void credito(double valor) {
         saldo = saldo + valor;
-        extrato = extrato + "Conta: " + numero + ". Credito: " + valor + ". Saldo: "  + saldo + ".\n";
+
+        // Registra a operacao no extrato
+        extrato += String.format(
+                "Conta: %d. Credito: %.2f. Saldo: %.2f.\n",
+                numero,
+                valor,
+                saldo
+        );
     }
 
+    // Saca um valor passado como parametro da conta
     public void debito(double valor) {
         saldo = saldo - valor;
-        extrato = extrato + "Conta: " + numero + ". Debito: " + valor + ". Saldo: "  + saldo + ".\n";
+
+        // Registra a operacao no extrato
+        extrato += String.format(
+                "Conta: %d. Debito: %.2f. Saldo: %.2f.\n",
+                numero,
+                valor,
+                saldo
+        );
     }
 
     public int getNumero() {
@@ -41,11 +57,19 @@ public class Conta {
         return extrato;
     }
 
+    // Valida o numero da conta
     public boolean validar() {
-        if (numero > 0) {
-            return true;
-        }
-        return false;
+        return numero > 0;
     }
 
+    // Autentica a senha para alguma operacao que tenha uma protecao
+    public boolean autenticacao(String senhaDono)
+    {
+        return dono.getSenha().equals(senhaDono);
+    }
+
+    // Verifica se essa conta tem um dono
+    public boolean temDono(){
+        return dono != null && dono.validar();
+    }
 }

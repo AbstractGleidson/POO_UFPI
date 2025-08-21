@@ -1,40 +1,80 @@
 package gleidson.teste.banco;
 import gleidson.banco.*;
-import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
+// Testa a classe Conta
 public class ContaTeste {
 
+    // Testa o Metodo credito
     @Test
-    public void testarCreditoDebito() {
-        Conta c1 = new Conta(1);
-        c1.credito(20);
-        c1.debito(10);
-        assertEquals(10, c1.getSaldo(), 0.001);
+    public void testaCreditoDebito() {
+        Conta conta = new Conta(1); // Conta comeca com 0
+
+        conta.credito(10); // Adiciona 10 ao saldo
+
+        assertEquals(10, conta.getSaldo(), 0.001);
+
+        conta.credito(190.5);
+        assertEquals(200.5, conta.getSaldo(), 0.001);
+
+    }
+
+    // Testa o Metodo Debito
+    @Test
+    public void testaDebito() {
+        Conta conta = new Conta(1); // Conta comeca com 0
+
+        conta.credito(200); // Adiciona 200 ao saldo
+        conta.debito(50); // Tira 50 do saldo
+        assertEquals(150, conta.getSaldo(), 0.001);
+
+        conta.debito(1.99999);
+        assertEquals(148.00001, conta.getSaldo(), 0.001);
+
+    }
+
+    // Testa o extrato da conta
+    @Test
+    public void testaExtrato() {
+        Conta conta = new Conta(1);
+        conta.credito(20);
+        conta.debito(10);
+        conta.credito(2);
+        conta.debito(1);
+
+        assertEquals(
+                "Conta: 1. Credito: 20.00. Saldo: 20.00.\n" +
+                        "Conta: 1. Debito: 10.00. Saldo: 10.00.\n" +
+                        "Conta: 1. Credito: 2.00. Saldo: 12.00.\n" +
+                        "Conta: 1. Debito: 1.00. Saldo: 11.00.\n",
+                conta.getExtrato()); // Testa o extrato
     }
 
     @Test
-    public void testarExtrato() {
-        Conta c1 = new Conta(1);
-        c1.credito(20);
-        c1.debito(10);
-        c1.credito(2);
-        c1.debito(1);
-        System.out.println(c1.getExtrato());
-        assertEquals("Conta: 1. Credito: 20.0. Saldo: 20.0.\n"
-                + "Conta: 1. Debito: 10.0. Saldo: 10.0.\n"
-                + "Conta: 1. Credito: 2.0. Saldo: 12.0.\n"
-                + "Conta: 1. Debito: 1.0. Saldo: 11.0.\n", c1.getExtrato());
+    public void testaAutenticacao()
+    {
+        Pessoa pessoa = new Pessoa(1, "Pateta", "Pateta123");
+        Conta conta = new Conta(1);
+
+        conta.setDono(pessoa); // Associa conta a pessoa
+
+        assertTrue(conta.autenticacao("Pateta123")); // Valida uma senha correta
+        assertFalse(conta.autenticacao("Pateta")); // Invalida uma senha incorreta
     }
 
     @Test
-    public void testarPessoaConta() {
-        Conta c1 = new Conta(1);
-        Pessoa p1 = new Pessoa(1, "Pedro", "123456");
-        p1.setConta(c1);
-        c1.setDono(p1);
-        assertEquals("Pedro", c1.getDono().getNome());
-        assertEquals(1, p1.getConta().getNumero());
-        assertEquals(1, c1.getDono().getCpf());
+    public void testaTemDono()
+    {
+        Conta conta = new Conta(1);
+
+        assertFalse(conta.temDono()); // Conta nao esta vinculada a uma pessoa
+
+        Pessoa pessoa = new Pessoa(1, "Pateta", "Pateta123");
+        conta.setDono(pessoa); // Associa conta a pessoa
+
+        assertTrue(conta.temDono()); // Conta esta vinculada a uma pessoa
     }
 }

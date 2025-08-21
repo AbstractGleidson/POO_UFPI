@@ -4,13 +4,13 @@ public class Pessoa {
 
     private int cpf;
     private String nome;
-    private Conta conta;
-    private String senha;
+    private Conta conta; // Conta do user em um dado banco
+    private String senha; // Senha da conta
 
-    public Pessoa (int oCpf, String nm, String passwd) {
-        cpf = oCpf;
-        nome = nm;
-        senha = passwd;
+    public Pessoa (int cpfPessoa, String nomePessoa, String senhaPessoa) {
+        cpf = cpfPessoa;
+        nome = nomePessoa;
+        senha = senhaPessoa;
     }
 
     public int getCpf() {
@@ -45,10 +45,8 @@ public class Pessoa {
         this.senha = pass;
     }
 
+    // Valida os dados da pessoa
     public boolean validar() {
-        if (cpf > 0 && nome != null && nome.length() > 0) {
-            return true;
-        }
-        return false;
+        return cpf > 0 && nome != null && !(nome.isEmpty());
     }
 }
