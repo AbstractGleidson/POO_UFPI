@@ -18,14 +18,21 @@ public class BancoTeste {
     // Testa o metodo casdastrarConta
     @Test
     public void testarCadastroConta() {
-        Pessoa pessoa = new Pessoa(1, "Pedro", "123456");
-        Conta conta = new Conta(1);
+        Pessoa pessoa1 = new Pessoa(1, "Pedro", "123456");
+        Pessoa pessoa2 = new Pessoa(2, "Jose", "1234");
+        Conta conta1 = new Conta(1);
+        Conta conta2 = new Conta(2);
+
         Banco banco = new Banco();
 
-        assertTrue(banco.cadastrarPessoa(pessoa));
+        assertTrue(banco.cadastrarPessoa(pessoa1));
+        assertTrue(banco.cadastrarPessoa(pessoa2));
 
-        assertTrue(banco.cadastrarConta(conta, 1));
-        assertFalse(banco.cadastrarConta(conta, 1));
+        assertTrue(banco.cadastrarConta(conta1, 1));
+        assertFalse(banco.cadastrarConta(conta1, 2)); // Tenta cadastrar uma pessoa a uma conta que ja tem dono
+
+        assertFalse(banco.cadastrarConta(conta2, 1)); // Tenta cadastrar uma conta com uma pessoa que ja tem conta
+        assertTrue(banco.cadastrarConta(conta2, 2));
     }
 
     // Testa o metodo de deposito

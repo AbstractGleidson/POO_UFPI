@@ -33,7 +33,7 @@ public class Banco {
         // Verifica se a pessoa ja esta cadastrada no banco
         Pessoa pessoa = pesquisarPessoa(cpf);
 
-        if (conta.validar() && pessoa != null && pesquisarConta(conta.getNumero()) == null) {
+        if (conta.validar() && pessoa != null && !(pessoa.temConta()) && !(contaExiste(conta))) {
             contas[posContas++] = conta;
             conta.setDono(pessoa);
             pessoa.setConta(conta);
@@ -57,7 +57,7 @@ public class Banco {
     public double saldo(int num, String passwd) {
         Conta conta = pesquisarConta(num); // Tenta achar a conta
 
-        if (conta != null && conta.getDono().getSenha().equals(passwd)) {
+        if (conta != null && conta.autenticacao(passwd)) {
                 return conta.getSaldo();
             }
 
@@ -111,5 +111,10 @@ public class Banco {
         }
         System.out.println("Contas invalidas ou valor invalido!");
         return false; // Operacao deu errado
+    }
+
+    public boolean contaExiste(Conta conta)
+    {
+        return pesquisarConta(conta.getNumero()) != null;
     }
 }

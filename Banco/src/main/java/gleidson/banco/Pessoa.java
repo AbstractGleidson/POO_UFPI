@@ -49,4 +49,9 @@ public class Pessoa {
     public boolean validar() {
         return cpf > 0 && nome != null && !(nome.isEmpty());
     }
+
+    public boolean temConta()
+    {
+        return conta != null && conta.validar();
+    }
 }
